@@ -1,0 +1,55 @@
+   webView = view.findViewById(R.id.web)
+        webView.loadUrl("https://fast.com")
+
+        webView.getSettings().setJavaScriptEnabled(true)
+
+
+        webView.getSettings().loadWithOverviewMode = true
+        webView.settings.useWideViewPort = true
+        webView.getSettings().domStorageEnabled = true
+        //webView.setWebViewClient(WebViewClient())
+
+
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                // Inject JavaScript to remove Facebook and Twitter icons
+                webView.evaluateJavascript(
+                    """
+            (function() {
+                // Hide the Fast.com logo
+                var logo = document.querySelector('.logo'); 
+                if (logo) {
+                    logo.style.display = 'none';
+                }
+                
+                // Hide the Netflix attribution text
+                var netflixAttribution = document.querySelector('.powered-by-container');
+                if (netflixAttribution) {
+                    netflixAttribution.style.display = 'none';
+                }
+
+                // Hide Facebook icon
+                var facebookIcon = document.querySelector('.footer-container'); 
+                if (facebookIcon) {
+                    facebookIcon.style.display = 'none';
+                }
+
+          
+
+                // Hide Language Selector
+                //english btn
+                var languageSelector = document.querySelector('.dropbtn'); // Adjust to actual class/ID
+                if (languageSelector) {
+                    languageSelector.style.display = 'none';
+                }
+
+                // Hide Privacy Link
+                var privacyLink = document.querySelector('.privacy-link'); // Adjust to actual class/ID
+                if (privacyLink) {
+                    privacyLink.style.display = 'none';
+                }
+            })();
+            """.trimIndent(), null
+                )
+            }
+        }
